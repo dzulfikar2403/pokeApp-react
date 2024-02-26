@@ -114,12 +114,12 @@ function Home() {
                 <hr />
                 <div className="flex justify-around py-2">
                   <p className="w-16">height</p>
-                  <p className="w-16">{pokemonSelect.height} m</p>
+                  <p className="w-16">{pokemonSelect.height / 10} m</p>
                 </div>
                 <hr />
                 <div className="flex justify-around py-2">
                   <p className="w-16">weight</p>
-                  <p className="w-16">{pokemonSelect.weight / 100} kg</p>
+                  <p className="w-16">{pokemonSelect.weight / 10} kg</p>
                 </div>
                 <hr />
               </div>
