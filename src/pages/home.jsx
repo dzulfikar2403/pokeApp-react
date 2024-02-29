@@ -5,7 +5,7 @@ import Api from "../api/Api";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import ScrollToTop from "react-scroll-to-top";
-import backIcon from "../assets/back.png";
+import DetailLayout from "../components/layout/DetailLayout";
 
 function Home() {
   const [pokemon, setPokemon] = useState(null);
@@ -15,7 +15,7 @@ function Home() {
   const [page, setPage] = useState(0);
 
   const getDataApi = async () => {
-    const poke = await Api.get(`pokemon?offset=${page * 20}&limit=20`);
+    const poke = await Api.get(`pokemon?offset=${page * 20}&limit=10`);
     setPokemon(poke.data.results);
   };
 
@@ -74,7 +74,7 @@ function Home() {
             <p className="text-red-600 mx-auto">{message}</p>
             <small className="pt-2 mx-auto text-gray-500 grayscale">Src: Pokeapi.co</small>
           </div>
-          <div className="grid grid-cols-4 px-4 py-8 place-items-center">{pokemon && pokemon.map((el, i) => <Card key={i + 1} data={el} aos="fade-up" onClick={() => infoPokemon(el.name)} />)}</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 py-8 place-items-center">{pokemon && pokemon.map((el, i) => <Card key={i + 1} data={el} aos="fade-up" onClick={() => infoPokemon(el.name)} />)}</div>
           <ScrollToTop
             smooth
             color="teal"
@@ -96,69 +96,7 @@ function Home() {
       )}
 
       {/* info detail */}
-      {isOpen && (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-slate-900">
-          <button className="absolute rounded bg-cyan-400 left-40 top-10" onClick={() => setOpen(!isOpen)}>
-            <img src={backIcon} alt="back" className="w-8" />
-          </button>
-          <div className="w-[1000px] px-4 py-6">
-            <div className="flex justify-between gap-5">
-              <div className="flex items-center justify-center m-auto bg-white border-2 border-teal-700 shadow-2xl w-96 h-96 shadow-teal-700 animate-fuush">
-                <img src={`https://img.pokemondb.net/artwork/large/${pokemonSelect.name}.jpg`} alt={`img-${pokemonSelect.id}`} className="w-48 mx-auto" />
-              </div>
-              <div className="w-1/2 px-4 py-6 bg-white rounded-lg">
-                <h1 className="text-2xl font-semibold text-yellow-600">{pokemonSelect.name}</h1>
-                <div className="flex gap-4 pt-1 pb-3">
-                  <h3 className="font-mono text-slate-300">#{pokemonSelect.id}</h3>
-                  {pokemonSelect.type.map((el, i) => (
-                    <span className="px-2 font-sans text-sm border rounded-xl border-cyan-700 text-cyan-900" key={i}>
-                      {el}
-                    </span>
-                  ))}
-                </div>
-                <hr />
-                <div className="pt-1 pb-3">
-                  <small className="inline-block py-3">{pokemonSelect.desc}</small>
-                  <p className="font-semibold">
-                    abilities:{" "}
-                    {pokemonSelect.abilities.map((el, i) => (
-                      <span className="px-2 mx-1 font-sans text-sm font-normal border rounded-full border-rose-700 text-rose-700" key={i}>
-                        {el}
-                      </span>
-                    ))}
-                  </p>
-                </div>
-                <hr />
-                <div className="flex justify-around py-2 text-left">
-                  <p className="w-16">HP</p>
-                  <p className="w-16">{pokemonSelect.hp}</p>
-                </div>
-                <hr />
-                <div className="flex justify-around py-2">
-                  <p className="w-16">Attack</p>
-                  <p className="w-16">{pokemonSelect.attack}</p>
-                </div>
-                <hr />
-                <div className="flex justify-around py-2">
-                  <p className="w-16">Defense</p>
-                  <p className="w-16">{pokemonSelect.defense}</p>
-                </div>
-                <hr />
-                <div className="flex justify-around py-2">
-                  <p className="w-16">height</p>
-                  <p className="w-16">{pokemonSelect.height / 10} m</p>
-                </div>
-                <hr />
-                <div className="flex justify-around py-2">
-                  <p className="w-16">weight</p>
-                  <p className="w-16">{pokemonSelect.weight / 10} kg</p>
-                </div>
-                <hr />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {isOpen && <DetailLayout pokemonSelect={pokemonSelect} setOpen={setOpen} isOpen={isOpen} />}
     </>
   );
 }
