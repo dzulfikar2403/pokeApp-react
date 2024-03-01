@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InputComp from "../components/element/InputComp";
 import Card from "../components/fragment/Card";
 import Api from "../api/Api";
@@ -13,6 +13,8 @@ function Home() {
   const [pokemonSelect, setPokemonSelect] = useState({});
   const [message, setMessage] = useState("");
   const [page, setPage] = useState(0);
+  const inputRef = useRef();
+  const [toggle, setToggle] = useState(false);
 
   const getDataApi = async () => {
     const poke = await Api.get(`pokemon?offset=${page * 20}&limit=10`);
@@ -23,6 +25,10 @@ function Home() {
     getDataApi();
     Aos.init({ once: true, duration: 1500 });
   }, [page]);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const infoPokemon = async (data) => {
     const dataInfo = await Api.get(`pokemon/${data}`);
@@ -64,15 +70,24 @@ function Home() {
 
   const pages = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+  const toggleMode = () => {
+    setToggle(!toggle);
+  };
+
   return (
     <>
       {!isOpen && (
-        <div className="flex min-h-screen flex-col justify-center py-5 mx-auto bg-slate-900">
+        <div className={`flex min-h-screen flex-col justify-center py-5 mx-auto ${toggle ? "bg-white" : "bg-slate-900"}`}>
           <div className="flex flex-col justify-center w-1/2 mx-auto">
+            <div className="flex justify-end">
+              <button className={`w-20 rounded-md shadow-md  font-semibold ${!toggle ? "text-blue-200 bg-blue-900 shadow-blue-800" : "text-yellow-200 bg-yellow-900 shadow-yellow-800"}`} onClick={toggleMode}>
+                {toggle ? "Dark" : "Light"}
+              </button>
+            </div>
             <img src="https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png" alt="source" className="w-40 py-4 mx-auto" onClick={() => window.location.reload()} />
-            <InputComp aos="fade-right" name="input" SearchAPI={SearchAPI} />
+            <InputComp ref={inputRef} aos="fade-right" name="input" SearchAPI={SearchAPI} />
             <p className="text-red-600 mx-auto">{message}</p>
-            <small className="pt-2 mx-auto text-gray-500 grayscale">Src: Pokeapi.co</small>
+            <small className="pt-2 mx-auto text-[#ccc] grayscale">Src: Pokeapi.co</small>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 py-8 place-items-center">{pokemon && pokemon.map((el, i) => <Card key={i + 1} data={el} aos="fade-up" onClick={() => infoPokemon(el.name)} />)}</div>
           <ScrollToTop

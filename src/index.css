@@ -14,3 +14,7 @@ body::-webkit-scrollbar-thumb {
   border-radius: 5%;
   background-color: gold;
 }
+
+.bg-btnDark{
+  @apply bg-yellow-700 text-yellow-300 shadow-yellow-800
+}

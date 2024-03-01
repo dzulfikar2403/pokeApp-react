@@ -1,8 +1,9 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-function InputComp({ SearchAPI, aos, name }) {
+const InputComp = forwardRef(({ SearchAPI, aos, name }, ref) => {
   return (
     <input
+      ref={ref}
       type="text"
       id="input"
       className="w-2/3 lg:w-1/2 px-4 py-1 rounded-md mx-auto shadow-md shadow-slate-500 focus:outline-none focus:border-none focus:shadow-lg focus:shadow-slate-500"
@@ -13,6 +14,6 @@ function InputComp({ SearchAPI, aos, name }) {
       data-aos-duration="800"
     />
   );
-}
+})
 
 export default InputComp;
