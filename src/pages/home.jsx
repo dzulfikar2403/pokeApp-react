@@ -28,6 +28,7 @@ function Home() {
 
   useEffect(() => {
     inputRef.current.focus();
+    setToggle(localStorage.getItem("toggleMode") === "true"); // beri pengkondisian sederhana agar mendapatkan nilai bool
   }, []);
 
   const infoPokemon = async (data) => {
@@ -46,7 +47,6 @@ function Home() {
     const desc = await Api.get(dataInfo.data.species.url);
     obj.desc = desc.data.flavor_text_entries[0].flavor_text;
 
-    console.log(desc);
     setPokemonSelect(obj);
     setOpen(!isOpen);
   };
@@ -56,7 +56,6 @@ function Home() {
       try {
         const pokeSearch = await Api.get(`pokemon/${e.target.value.toLowerCase()}`);
         console.log("get data..");
-        console.log([pokeSearch.data]);
         setPokemon([pokeSearch.data]);
         setMessage("");
       } catch (error) {
@@ -72,6 +71,7 @@ function Home() {
 
   const toggleMode = () => {
     setToggle(!toggle);
+    localStorage.setItem("toggleMode", !toggle); // bool auto diconvert jadi string
   };
 
   return (
@@ -100,12 +100,12 @@ function Home() {
           <footer className="text-center w-full">
             <div className="flex justify-center gap-2 pb-4">
               {pages.map((el, i) => (
-                <button key={i} className="p-2 bg-black text-teal-500 rounded cursor-pointer" onClick={() => setPage(el)}>
+                <button key={i} className={`p-2 rounded cursor-pointer ${toggle ? `bg-yellow-500 text-white focus:bg-indigo-600` : `bg-black text-teal-500 focus:bg-indigo-900`} `} onClick={() => setPage(el)}>
                   {el}
                 </button>
               ))}
             </div>
-            <p className="font-semibold text-white">Created by @Dzulfikar </p>
+            <p className={`font-semibold ${toggle ? `text-slate-900` : `text-white`}`}>Created by @Dzulfikar </p>
           </footer>
         </div>
       )}
