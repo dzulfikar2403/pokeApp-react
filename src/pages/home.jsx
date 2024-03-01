@@ -54,7 +54,7 @@ function Home() {
   const SearchAPI = async (e) => {
     if (e.target.value.length >= 3) {
       try {
-        const pokeSearch = await Api.get(`pokemon/${e.target.value}`);
+        const pokeSearch = await Api.get(`pokemon/${e.target.value.toLowerCase()}`);
         console.log("get data..");
         console.log([pokeSearch.data]);
         setPokemon([pokeSearch.data]);
