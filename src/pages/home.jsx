@@ -71,7 +71,7 @@ function Home() {
 
   const toggleMode = () => {
     setToggle(!toggle);
-    localStorage.setItem("toggleMode", !toggle); // bool auto diconvert jadi string
+    localStorage.setItem("toggleMode", !toggle); // bool auto diconvert jadi string ...
   };
 
   return (
